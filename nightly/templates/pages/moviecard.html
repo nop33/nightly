@@ -1,0 +1,14 @@
+<div class="card" data-movie="{{ movie.tmdb_id }}">
+    <a class="image">
+        <img src="{{ movie.poster_url }}">
+    </a>
+    <div class="content">
+        <a class="header">{{ movie.title }}</a>
+        <div class="meta">
+            <a>{{ movie.release_year }}</a>
+        </div>
+    </div>
+    <div class="ui bottom attached icon button drag-handle">
+        <i class="move icon"></i>
+    </div>
+</div>

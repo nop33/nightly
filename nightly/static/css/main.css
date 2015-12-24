@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  padding: 0; }
+
+  .column.starter {
+    padding: 40px 15px; }
+
+    .home h2 {
+      text-align: left;
+      font-style: italic; }
+      .home h2 .speach-bubble > div {
+        display: inline-block; }
+        .home h2 .speach-bubble.person2 {
+          color: rgba(217, 92, 92, 0.8);
+          text-align: right; }

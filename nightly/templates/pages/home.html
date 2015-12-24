@@ -1,0 +1,36 @@
+{% extends 'layouts/main.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <div class="ui grid home">
+        <div class="centered row">
+            <div class="eight wide computer sixteen wide mobile aligned column">
+                <h1 class="ui header teal">
+                    <div class="content">Nightly</div>
+                    <div class="sub header">An application tailored to solve one of the most difficult decisions of the human kind;</div>
+                </h1>
+            </div>
+        </div>
+        <div class="centered row">
+            <div class="eight wide computer fourteen wide mobile aligned column">
+                <h2 class="ui medium header red">
+                    <div class="speach-bubble person1">
+                        <div><span>- "Hey guys, wanna join for a movie?"</span></div>
+                    </div>
+                    <div class="speach-bubble person2">
+                        <div><span>- "Sure but... which movie are we gonna watch?"</span></div>
+                    </div>
+                    <div class="speach-bubble person1">
+                        <div><span>- "OK, give me a sec, I'll create a Movievent."</span></div>
+                    </div>
+                </h2>
+            </div>
+        </div>
+        <div class="centered row">
+            <div class="aligned column">
+                <a class="massive ui red button" href="{{ url_for('.movievent_create') }}">Create Movievent</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

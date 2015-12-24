@@ -1,0 +1,36 @@
+{% extends 'layouts/main.html' %}
+
+{% block title %}Create Movievent{% endblock %}
+
+{% block content %}
+    <div class="ui grid">
+        <div class="centered row">
+            <div class="eight wide computer sixteen wide mobile aligned column">
+                <h1 class="ui header">
+                    <div class="content">Create a Movievent</div>
+                    <div class="sub header">Tell us more about the movie night (or day!) you're organising</div>
+                </h1>
+            </div>
+        </div>
+        <div class="centered row">
+            <form method="POST" class="ui form ten wide computer fourteen wide mobile column movievent">
+                {% if form.csrf_enabled %}
+                    {{ form.csrf_token }}
+                {% endif %}
+                <div class="fields">
+                    <div class="ui huge icon input ten wide field">
+                        {{ form.date(placeholder=form.date.description) }}
+                    </div>
+                    <div class="ui huge icon input six wide field">
+                        {{ form.time(placeholder=form.time.description) }}
+                    </div>
+                </div>
+                <div class="ui centered grid movievent-submit">
+                    <div class="eight wide computer eight wide tablet fourteen wide mobile column">
+                        <input class="fluid ui big red button" type="submit" value="Create">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

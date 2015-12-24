@@ -9,6 +9,11 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
+    # themoviedb (https://www.themoviedb.org)
+    TMDB_KEY = 'xxxxxx'
+    TMDB_ENDPOINT = 'http://api.themoviedb.org/3'
+    TMDB_IMAGE_ENDPOINT = 'http://image.tmdb.org/t/p/w500'
+
 
 class ProductionConfig(Config):
     DEBUG = False

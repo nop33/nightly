@@ -1,0 +1,114 @@
+{% extends 'layouts/main.html' %}
+
+{% block title %}Movievent on {{ movievent.date.strftime('%d %B, %Y') }}{% endblock %}
+
+{% block content %}
+    <div class="ui grid">
+        <div class="centered row header-row">
+            <div class="eight wide computer sixteen wide mobile aligned column">
+                <h1 class="ui header">
+                    <div class="content">Movievent #{{ movievent.id }}</div>
+                    <div class="sub header">at {{ movievent.time.strftime('%H:%M') }} on {{ movievent.date.strftime('%d %B, %Y') }}</div>
+                </h1>
+            </div>
+        </div>
+        <div class="centered row">
+            <div class="eight wide computer eight wide tablet sixteen wide mobile aligned column">
+                <h2>Propose some movies!</h2>
+                <div class="fluid ui search selection dropdown search-movie">
+                    <input type="hidden" name="movie">
+                    <i class="search icon"></i>
+                    <div class="default text">Search movie...</div>
+                    <div class="menu">
+                        {# JS injected movie titles #}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="centered row">
+            <div class="column aligned">
+                <div class="ui seven doubling cards" id="movie-cards">
+                    {# JS injected movie cards #}
+                    {% for movie in movievent.movies: %}
+                        {{ render_template('pages/moviecard.html', movie=movie) | safe }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="centered row">
+            <div class="aligned column">
+                <a class="massive ui red button" onclick="save_movies()">Save movies</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var get_movie_data = function(movie_id) {
+            $.ajax({
+                url: {{ url_for('.search_movie') | tojson }},
+                method: 'POST',
+                data: { id: movie_id },
+                success: function(data) {
+                    $('.cards').append(data);
+                }
+            });
+            $('.header-row').show('slow');
+            $('input.search').blur()
+        }
+
+        var save_movies = function() {
+            var movies = [];
+            $('#movie-cards .card').each(function() {
+                var movie_id = $(this).data('movie');
+                movies.push(movie_id);
+            });
+
+            $.ajax({
+                url: {{ url_for('.movievent_save_movies', id=movievent.id) | tojson }},
+                method: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(movies),
+                success: function(data) {
+                    $('.cards').before(data['success_message']);
+                    setupMessages();
+                }
+            });
+        }
+
+        $(document).ready(function(){
+
+            Sortable.create(document.getElementById('movie-cards'), {
+                handle: '.drag-handle',
+                animation: 150
+            });
+
+            $('input.search').on('click', function() {
+                $('.header-row').hide('slow');
+                $('h2').hide('slow');
+            });
+
+            $('input.search').on('keyup', function() {
+                var search_text = $(this).val();
+                if (search_text.length >= 3) {
+                    $.ajax({
+                        url: {{ url_for('.search_movies') | tojson }},
+                        method: 'POST',
+                        data: { keyword: search_text },
+                        success: function(data) {
+                            $('.search-movie .menu').html('');
+                            for (movie in data.results) {
+                                movie = data.results[movie];
+                                console.log(movie.title);
+                                $('.search-movie .menu').append('<div class="item" onclick="get_movie_data('+movie.id+')">(' + movie.release_date.substring(0,4) + ') ' + movie.title + '</div>');
+                            }
+                        },
+                        complete: function() {
+                            $(".dropdown").dropdown('show');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}
